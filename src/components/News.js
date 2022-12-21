@@ -1,0 +1,504 @@
+import React, { Component } from "react";
+import NewsItem from "./NewsItem";
+import Spinner from "./Spinner";
+import PropTypes from "prop-types";
+import InfiniteScroll from "react-infinite-scroll-component";
+export class News extends Component {
+  // articles = [
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "Eonline.com",
+  //     },
+  //     author: "Amy Lamare",
+  //     title:
+  //       "Justin Timberlake Reflects on “Heartbreaking” Death of Stephen “tWitch” Boss, Friend of {this.props.pageSize} Years - E! NEWS",
+  //     description:
+  //       'Justin Timberlake paid tribute to his friend, the late Stephen "tWitch" Boss, on Twitter on Dec. 14. Keep reading to find out what he said.',
+  //     url: "https://www.eonline.com/news/1358304/justin-timberlake-reflects-on-heartbreaking-death-of-stephen-twitch-boss-friend-of-{this.props.pageSize}-years",
+  //     urlToImage:
+  //       "https://akns-images.eonline.com/eol_images/Entire_Site/{this.props.pageSize}221114/rs_1{this.props.pageSize}0x1{this.props.pageSize}0-221214131413-1{this.props.pageSize}0.justin-timberlake-stephen-twitch-boss.jpg?fit=around%7C1080:1080&output-quality=90&crop=1080:1080;center,top",
+  //     publishedAt: "{this.props.pageSize}22-12-15T04:36:22Z",
+  //     content:
+  //       'Justin Timberlake is mourning the loss of a dear friend.\r\nThe "Cry Me a River" singer paid tribute to Stephen "tWitch" Boss, who sadly died by suicide age 40, E! News confirmed on Dec. 14.\r\n"It\'s hea… [+798 chars]',
+  //   },
+  //   {
+  //     source: {
+  //       id: "ars-technica",
+  //       name: "Ars Technica",
+  //     },
+  //     author: "Eric Berger",
+  //     title:
+  //       "A Russian spacecraft started leaking uncontrollably on Wednesday night - Ars Technica",
+  //     description:
+  //       "After three hours Wednesday night the leak remained ongoing.",
+  //     url: "https://arstechnica.com/science/{this.props.pageSize}22/12/a-russian-spacecraft-started-leaking-uncontrollably-on-monday-night/",
+  //     urlToImage:
+  //       "https://cdn.arstechnica.net/wp-content/uploads/{this.props.pageSize}22/12/NASA-Live_-Official-Stream-of-NASA-TV-11-59-28-screenshot-760x380.png",
+  //     publishedAt: "{this.props.pageSize}22-12-15T03:58:43Z",
+  //     content:
+  //       "Enlarge/ A view of the aft end of the Soyuz spacecraft leaking what appears to be ammonia on Wednesday night.\r\n39 with 0 posters participating\r\nA Russian spacewalk was canceled at the last minute on … [+28{this.props.pageSize} chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "The Guardian",
+  //     },
+  //     author: "Sian Cain",
+  //     title:
+  //       "Henry Cavill dropped as Superman after James Gunn announces new movie - The Guardian",
+  //     description:
+  //       "Actor says it is ‘not the easiest news’ after having recently been given the go-ahead by Warner Bros to announce his return to the role",
+  //     url: "https://www.theguardian.com/film/{this.props.pageSize}22/dec/15/henry-cavill-dropped-as-superman-after-james-gunn-announces-new-movie",
+  //     urlToImage:
+  //       "https://i.guim.co.uk/img/media/c7017e77c9be1ebd9b311832df47b7c0f9667c3f/458_42_4409_2645/master/4409.jpg?width=1{this.props.pageSize}0&height=630&quality=85&auto=format&fit=crop&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=4e340c068ee4715c02604b2b4d16c27b",
+  //     publishedAt: "{this.props.pageSize}22-12-15T03:33:00Z",
+  //     content:
+  //       "Guardians of the Galaxy director and DC Studios new co-chairman, James Gunn, is writing a Superman movie that wont involve the actor Henry Cavill, who said it was not the easiest news after he only r… [+3730 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: "cnn",
+  //       name: "CNN",
+  //     },
+  //     author: "Donie O'Sullivan",
+  //     title:
+  //       "Twitter suspends account that tracked Musk's private jet, despite billionaire's 'free speech' pledge - CNN",
+  //     description:
+  //       "Twitter on Wednesday permanently suspended an account that tracked the location of Elon Musk's private jet, despite the social media company's owner vowing last month he would leave the account up as part of his \"commitment to free speech.\"",
+  //     url: "https://www.cnn.com/{this.props.pageSize}22/12/14/tech/elonjet-twitter-suspended/index.html",
+  //     urlToImage:
+  //       "https://media.cnn.com/api/v1/images/stellar/prod/2{this.props.pageSize}621095808-elon-musk-1010-file.jpg?c=16x9&q=w_800,c_fill",
+  //     publishedAt: "{this.props.pageSize}22-12-15T02:59:00Z",
+  //     content:
+  //       "Twitter on Wednesday permanently suspended an account that tracked the location of Elon Musks private jet, despite the social media companys owner vowing last month he would leave the account up as p… [+3513 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "BBC News",
+  //     },
+  //     author: "https://www.facebook.com/bbcnews",
+  //     title:
+  //       "Suedi Murekezi: Russia frees US man in Ukraine prisoner swap - BBC",
+  //     description:
+  //       "The crypto investor was let go in a deal that saw 64 Ukrainian troops released, according to officials.",
+  //     url: "https://www.bbc.com/news/world-us-canada-63981510",
+  //     urlToImage:
+  //       "https://ichef.bbci.co.uk/news/1024/branded_news/6FAE/production/_128009582_screenshot{this.props.pageSize}22-12-14at6.09.37pm.png",
+  //     publishedAt: "{this.props.pageSize}22-12-15T02:58:43Z",
+  //     content:
+  //       "A US citizen held since June is among dozens released in a prisoner swap between Ukraine and Russia. \r\nUkrainian President Volodymr Zelensky said in his nightly address Ukraine had received 64 soldie… [+1594 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "CNBC",
+  //     },
+  //     author: "Lora Kolodny",
+  //     title: "Elon Musk sells another huge chunk of Tesla shares - CNBC",
+  //     description:
+  //       "The transactions took place between Monday and Wednesday this week according to the filings with the Securities and Exchange Commission.",
+  //     url: "https://www.cnbc.com/{this.props.pageSize}22/12/15/elon-musk-sells-another-huge-chunk-of-tesla-shares-.html",
+  //     urlToImage:
+  //       "https://image.cnbcfm.com/api/v1/image/107102460-1660225112171-gettyimages-1{this.props.pageSize}629{this.props.pageSize}68-aa_1003{this.props.pageSize}{this.props.pageSize}_39853.jpeg?v=1671072998&w=19{this.props.pageSize}&h=1080",
+  //     publishedAt: "{this.props.pageSize}22-12-15T02:56:00Z",
+  //     content:
+  //       "Tesla CEO Elon Musk sold about 22 million more shares in his electric vehicle business, which were worth around $3.6 billion, according to a financial filing out Wednesday night. The transactions too… [+1447 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "Rolling Stone",
+  //     },
+  //     author: "Nancy Dillon",
+  //     title:
+  //       "Megan Thee Stallion’s Ex-Assistant Said Tory Lanez Threatened Her With Gun in Car: Prosecutors - Rolling Stone",
+  //     description:
+  //       'Kelsey Harris took the witness stand Wednesday and called it "ridiculous" to suggest she opened fire on Megan Thee Stallion in July {this.props.pageSize}{this.props.pageSize}',
+  //     url: "https://www.rollingstone.com/music/music-news/megan-thee-stallion-kelsey-harris-testifies-tory-lanez-threatened-her-gun-car-1234647352/",
+  //     urlToImage:
+  //       "https://www.rollingstone.com/wp-content/uploads/{this.props.pageSize}22/12/megan-thee-stallion-BFF-testifies.jpg?w=1600&h=900&crop=1",
+  //     publishedAt: "{this.props.pageSize}22-12-15T02:49:36Z",
+  //     content:
+  //       "Megan Thee Stallion’s former best friend Kelsey Harris took the witness stand at Tory Lanez’s felony assault trial Wednesday as prosecutors revealed she gave a bombshell recorded interview in Septemb… [+7746 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "The Guardian",
+  //     },
+  //     author: "Guardian staff reporter",
+  //     title:
+  //       "Senate votes to ban TikTok on US government-owned devices - The Guardian US",
+  //     description:
+  //       "Bill comes after several states barred employees from downloading the app on state-owned gadgets over data concerns",
+  //     url: "https://www.theguardian.com/us-news/{this.props.pageSize}22/dec/14/us-senate-ban-tiktok-government-owned-devices",
+  //     urlToImage:
+  //       "https://i.guim.co.uk/img/media/38291b2bc0ec364cc55539c93e385dea414d6c1f/0_74_4000_2399/master/4000.jpg?width=1{this.props.pageSize}0&height=630&quality=85&auto=format&fit=crop&overlay-align=bottom%2Cleft&overlay-width=100p&overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&enable=upscale&s=2b5829fe3b9a55b4de8e2595e3d2ed{this.props.pageSize}",
+  //     publishedAt: "{this.props.pageSize}22-12-15T02:37:00Z",
+  //     content:
+  //       "The US Senate late on Wednesday passed by voice vote a bill to bar federal employees from using Chinese-owned video-sharing app TikTok on government-owned devices.\r\nThe bill must still be approved by… [+31{this.props.pageSize} chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "BBC News",
+  //     },
+  //     author: "https://www.facebook.com/bbcnews",
+  //     title:
+  //       "Tom Hanks was on Pelosi attack suspect hit list, court hears - BBC",
+  //     description:
+  //       "The accused, David DePape, had also planned to target President Joe Biden's son, an officer testifies.",
+  //     url: "https://www.bbc.com/news/world-us-canada-63981507",
+  //     urlToImage:
+  //       "https://ichef.bbci.co.uk/news/1024/branded_news/12F16/production/_128009577_gettyimages-1245584874.jpg",
+  //     publishedAt: "{this.props.pageSize}22-12-15T02:07:22Z",
+  //     content:
+  //       "The man accused of a hammer attack on the husband of House of Representatives Speaker Nancy Pelosi also wanted to target other public figures, including actor Tom Hanks, a court has heard.\r\nA police … [+2459 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "ESPN",
+  //     },
+  //     author: "Kendra Andrews",
+  //     title:
+  //       "Warriors' Stephen Curry (left shoulder) exits early at Pacers - ESPN",
+  //     description:
+  //       "Warriors star Stephen Curry was ruled out in the 4th quarter of Wednesday's game at the Pacers because of a left shoulder injury.",
+  //     url: "https://www.espn.com/nba/story/_/id/35255213/warriors-stephen-curry-left-shoulder-exits-early-pacers",
+  //     urlToImage:
+  //       "https://a.espncdn.com/combiner/i?img=%2Fphoto%2F{this.props.pageSize}22%2F1215%2Fr1106831_1296x729_16%2D9.jpg",
+  //     publishedAt: "{this.props.pageSize}22-12-15T01:57:47Z",
+  //     content:
+  //       "INDIANAPOLIS -- Stephen Curry will receive an MRI on Thursday in Philadelphia after injuring his left shoulder in the Golden State Warriors' 125-119 loss at the Indiana Pacers on Wednesday.\r\nCurry su… [+2982 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "Fox Business",
+  //     },
+  //     author: "Joe Silverstein",
+  //     title:
+  //       "Federal Reserve interest rate hike draws mixed reactions: Fed committed to a 'high unemployment recession' - Fox Business",
+  //     description:
+  //       "Federal Reserve Chairman Jerome Powell's announcement that the U.S. central bank is raising interest rates by 50 basis points was met with mixed reaction across the political spectrum.",
+  //     url: "https://www.foxbusiness.com/media/federal-reserve-interest-rate-hike-draws-mixed-reactions-committed-high-unemployment-recession",
+  //     urlToImage:
+  //       "https://a57.foxnews.com/static.foxbusiness.com/foxbusiness.com/content/uploads/{this.props.pageSize}22/06/0/0/Jerome-Powell.jpg?ve=1&tl=1",
+  //     publishedAt: "{this.props.pageSize}22-12-15T01:51:{this.props.pageSize}Z",
+  //     content:
+  //       "Federal Reserve Chairman Jerome Powell announced that the central bank will raise the federal funds rate by 50 basis points Wednesday. His announcement comes off the heels of Tuesday's better than ex… [+4728 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "Yahoo Entertainment",
+  //     },
+  //     author: "Olga Kharif",
+  //     title:
+  //       "FTX Executive Ryan Salame Tipped Off Bahamian Regulators to Possible Fraud - Yahoo Finance",
+  //     description:
+  //       "(Bloomberg) -- Several days before FTX collapsed into bankruptcy, one of Sam Bankman-Fried’s most senior executives was tipping off Bahamian authorities to...",
+  //     url: "https://finance.yahoo.com/news/ftx-executive-ryan-salame-tipped-010{this.props.pageSize}4926.html",
+  //     urlToImage:
+  //       "https://s.yimg.com/ny/api/res/1.2/LtJQWGDxXkFT2Bqvu9rcpA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD04MzY-/https://media.zenfs.com/en/bloomberg_markets_842/c6e66efd0082d8abe036e5c80cd7af0c",
+  //     publishedAt: "{this.props.pageSize}22-12-15T01:27:35Z",
+  //     content:
+  //       "(Bloomberg) -- Several days before FTX collapsed into bankruptcy, one of Sam Bankman-Frieds most senior executives was tipping off Bahamian authorities to possible misuse of funds at the exchange. Ry… [+2951 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: "politico",
+  //       name: "Politico",
+  //     },
+  //     author: null,
+  //     title:
+  //       "Ukraine: Russian strikes thwarted, but wreckage hits buildings - POLITICO",
+  //     description:
+  //       "Ukrainian President Volodymyr Zelenskyy said in a video the “terrorists” fired 13 Iranian-made drones.",
+  //     url: "https://www.politico.com/news/{this.props.pageSize}22/12/14/ukraine-russian-strikes-wreckage-00074028",
+  //     urlToImage:
+  //       "https://static.politico.com/c8/5b/88860a384cef8907eca8c69c5{this.props.pageSize}b/russia-ukraine-war-92414.jpg",
+  //     publishedAt: "{this.props.pageSize}22-12-15T00:38:23Z",
+  //     content:
+  //       "The snow-covered capital remained largely calm after the foiled attack, which occurred around daybreak. As the working day began, authorities sounded the all-clear.\r\nThe head of the Kyiv city adminis… [+4116 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: "associated-press",
+  //       name: "Associated Press",
+  //     },
+  //     author: "Sylvie Corbet",
+  //     title:
+  //       "France celebrates WCup victory, fans cheer Morocco team - The Associated Press",
+  //     description:
+  //       "PARIS (AP) — Crowds in Paris and other French cities erupted in shouts of joy as France advanced to the World Cup final Wednesday, while disappointed Morocco fans mingled with the exuberant supporters of the winning team, paying tribute to the African country…",
+  //     url: "https://apnews.com/10b37df250a7ff78660eb3d8d34f610c",
+  //     urlToImage:
+  //       "https://storage.googleapis.com/afs-prod/media/a42d40b37a1043fd89b1609989dd0e56/3000.webp",
+  //     publishedAt: "{this.props.pageSize}22-12-15T00:11:15Z",
+  //     content:
+  //       "PARIS (AP) Crowds in Paris and other French cities erupted in shouts of joy as France advanced to the World Cup final Wednesday, while disappointed Morocco fans mingled with the exuberant supporters … [+4219 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "Sports Illustrated",
+  //     },
+  //     author: "Pat Forde",
+  //     title:
+  //       "Arizona Assistant Coaches Took the Fall For Sean Miller - Sports Illustrated",
+  //     description:
+  //       "A recent IARP decision involving the ex-Arizona and current Xavier coach demonstrates college basketball’s issue with accountability.",
+  //     url: "https://www.si.com/college/{this.props.pageSize}22/12/14/arizona-wildcats-assistant-coaches-took-fall-sean-miller-ncaa-iarp",
+  //     urlToImage:
+  //       "https://www.si.com/.image/t_share/MTk0NDQ2OTY0OTI0ODg0NjU3/sean-miller-arizona-basketball.png",
+  //     publishedAt: "{this.props.pageSize}22-12-14T23:37:27Z",
+  //     content:
+  //       "On page 48 of the NCAA’s Independent Review Panel report that set Sean Miller free, it is noted that the former Arizona and current Xavier men’s basketball coach keeps a “Book of Truth.” It’s describ… [+7388 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: "cnn",
+  //       name: "CNN",
+  //     },
+  //     author:
+  //       'By <a href="/profiles/maureen-chowdhury">Maureen Chowdhury</a>, Seán Federico O\'Murchú and Tori B. Powell, CNN',
+  //     title: "Tornado confirmed in New Orleans: Live updates - CNN",
+  //     description:
+  //       "A confirmed tornado moved through New Orleans around 4 p.m., according to the National Weather Service. Follow our live updates.",
+  //     url: "https://www.cnn.com/weather/live-news/louisiana-tornado-12-14-22/index.html",
+  //     urlToImage:
+  //       "https://cdn.cnn.com/cnnnext/dam/assets/221214175604-01-storm-new-orleans-1214-super-tease.jpg",
+  //     publishedAt: "{this.props.pageSize}22-12-14T23:07:00Z",
+  //     content:
+  //       "Lizzie Taylor left her home in New Iberia, Louisiana, about 5 minutes before a tornado destroyed it. She now is left without a place to live.\r\nAll of the units are destroyed, Taylor told CNN. The lan… [+560 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: null,
+  //       name: "BuzzFeed News",
+  //     },
+  //     author: "Izzy Ampil",
+  //     title:
+  //       'I\'m Not Sure Why James Cameron Would Make "Avatar: The Way Of Water" So Boring - BuzzFeed News',
+  //     description:
+  //       "Beautiful visuals can't make up for the film's oversimplified view of colonialism.",
+  //     url: "https://www.buzzfeednews.com/article/izzyampil/avatar-the-way-of-water-review",
+  //     urlToImage:
+  //       "https://img.buzzfeed.com/buzzfeed-static/static/{this.props.pageSize}22-12/14/22/asset/2e8c12c6d097/sub-buzz-605-1671055213-17.jpg?crop={this.props.pageSize}00:1047;0,286%26downsize=1250:*",
+  //     publishedAt: "{this.props.pageSize}22-12-14T22:52:13Z",
+  //     content:
+  //       "Quick refresher: The first movie took place sometime in the 22nd century, in a future where humans have colonized a distant moon called Pandora, inhabited by a humanoid alien species called the Navi.… [+3670 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: "fox-news",
+  //       name: "Fox News",
+  //     },
+  //     author: "Adam Shaw",
+  //     title:
+  //       "Biden admin sues Arizona over creation of shipping container border wall to stop illegal immigration - Fox News",
+  //     description:
+  //       "The Biden administration on Wednesday sued Arizona over its moves to construct a makeshift border barrier using shipping containers to stop illegal immigration.",
+  //     url: "https://www.foxnews.com/politics/biden-admin-sues-arizona-creation-shipping-container-border-wall-stop-illegal-immigration",
+  //     urlToImage:
+  //       "https://static.foxnews.com/foxnews.com/content/uploads/{this.props.pageSize}22/12/shipping-containers-ariz-border.jpg",
+  //     publishedAt: "{this.props.pageSize}22-12-14T22:41:03Z",
+  //     content:
+  //       "The Biden administration on Wednesday sued the state of Arizona over its construction of a makeshift border wall using shipping containers and razor wire in order to prevent the flow of illegal immig… [+5068 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: "abc-news",
+  //       name: "ABC News",
+  //     },
+  //     author: "Luis Martinez",
+  //     title:
+  //       "Will US Patriot missiles really be a game changer in Ukraine? - ABC News",
+  //     description: "Russia has sharply stepped up its missile attacks.",
+  //     url: "https://abcnews.go.com/Politics/us-patriot-missiles-game-changer-ukraine/story?id=95222548",
+  //     urlToImage:
+  //       "https://s.abcnews.com/images/Politics/patriot-missile-zuma-jt-221214_1671041966804_hpMain_16x9_992.jpg",
+  //     publishedAt: "{this.props.pageSize}22-12-14T22:39:05Z",
+  //     content:
+  //       "If the United States approves the transfer of Patriot air defense missiles to Ukraine will they really be the game changer that Ukrainian officials expect them to be? And how quickly could they actua… [+3564 chars]",
+  //   },
+  //   {
+  //     source: {
+  //       id: "techcrunch",
+  //       name: "TechCrunch",
+  //     },
+  //     author: "Devin Coldewey",
+  //     title:
+  //       "Apple’s Emergency SOS via satellite prompts rescue after car goes off a cliff north of LA - TechCrunch",
+  //     description:
+  //       'Apple\'s new "Emergency SOS" service has led to what may well be its first successful rescue operation, certainly the first to be posted live.',
+  //     url: "https://techcrunch.com/{this.props.pageSize}22/12/14/apples-emergency-sos-via-satellite-prompts-rescue-after-car-goes-off-a-cliff-north-of-la/",
+  //     urlToImage:
+  //       "https://techcrunch.com/wp-content/uploads/{this.props.pageSize}22/12/montrose-rescue.jpg?resize=1{this.props.pageSize}0,755",
+  //     publishedAt: "{this.props.pageSize}22-12-14T22:31:06Z",
+  //     content:
+  //       "Apple’s new “Emergency SOS” service that lets off-grid iPhone users call for help via satellite has led to what may very well be its first successful rescue operation, certainly the first to be docum… [+1803 chars]",
+  //   },
+  // ];
+  constructor(props) {
+    super(props);
+    this.state = {
+      articles: [],
+      loading: false,
+      page: 1,
+      totalResult:0
+    };
+    document.title = `${
+      this.props.category.charAt(0).toUpperCase() +
+      this.props.category.substring(1)
+    } - News Monkey`;
+  }
+  static defaultProps = {
+    country: "in",
+    pageSize: 8,
+    category: "general",
+  };
+  static propTypes = {
+    country: PropTypes.string,
+    pageSize: PropTypes.number,
+  };
+  fetchMoreData = async() => {
+    // a fake async api call like which sends
+    // 20 more records in 1.5 secs
+   this.setState({page:this.state.page+1});
+   const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.api}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    this.setState({ loading: true });
+    let data = await fetch(url);
+    let parseData = await data.json();
+    this.setState({ loading: false });
+    this.setState({
+      articles:this.state.articles.concat(parseData.articles),
+      totalResults: parseData.totalResults,
+    });
+  };
+
+  async updateNews() {
+    this.props.setProgress(0);
+    const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.api}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+   // this.setState({ loading: true });
+    this.props.setProgress(30);
+
+    let data = await fetch(url);
+    let parseData = await data.json();
+    this.props.setProgress(75);
+
+   // this.setState({ loading: false });
+    this.setState({
+      articles: parseData.articles,
+      totalResults: parseData.totalResults,
+    });
+    this.props.setProgress(100);
+  }
+  async componentDidMount() {
+    // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=c49fc619db544b9da1d8aba0b072c462&page=1&pageSize=${this.props.pageSize}`;
+    // this.setState({ loading: true });
+    // let data = await fetch(url);
+    // let parseData = await data.json();
+    // this.setState({ loading: false });
+    // this.setState({
+    //   articles: parseData.articles,
+    //   totalResults: parseData.totalResults,
+    // });
+    this.updateNews();
+  }
+  // handlePrevClick = async () => {
+  //   // let url = `https://newsapi.org/v2/top-headlines?country=${
+  //   //   this.props.country
+  //   // }&category=${
+  //   //   this.props.category
+  //   // }&apiKey=c49fc619db544b9da1d8aba0b072c462&page=${
+  //   //   this.state.page - 1
+  //   // }&pageSize=${this.props.pageSize}`;
+  //   // this.setState({ loading: true });
+  //   // let data = await fetch(url);
+  //   // let parseData = await data.json();
+  //   // this.setState({ loading: false });
+  //   // this.setState({ articles: parseData.articles });
+  //   this.setState({ page: this.state.page - 1 });
+  //   this.updateNews();
+  // };
+  // handleNextClick = async () => {
+  //   // let url = `https://newsapi.org/v2/top-headlines?country=${
+  //   //   this.props.country
+  //   // }&category=${
+  //   //   this.props.category
+  //   // }&apiKey=c49fc619db544b9da1d8aba0b072c462&page=${
+  //   //   this.state.page + 1
+  //   // }&pageSize=${this.props.pageSize}`;
+  //   // this.setState({ loading: true });
+  //   // let data = await fetch(url);
+  //   // let parseData = await data.json();
+  //   // this.setState({ loading: false });
+  //   // this.setState({ articles: parseData.articles });
+
+  //   this.setState({ page: this.state.page + 1 });
+  //   this.updateNews();
+  // };
+  render() {
+    return (
+      <>
+        <h1 className="text-center">News Monkey- Top headlines</h1>
+        
+        <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={this.state.articles.length!==this.state.totalResult}
+          loader={this.state.loading && <Spinner />}
+        >
+          <div className="container">
+          <div className="row">
+            {this.state.articles.map((element) => {
+              return (
+                <div className="col-md-4" key={element.url}>
+                  <NewsItem
+                    title={element.title.slice(0, 45)}
+                    description={element.description}
+                    imageUrl={element.urlToImage}
+                    newsUrl={element.url}
+                    author={element.author ? element.author : "unknown"}
+                    date={new Date(element.publishedAt).toUTCString()}
+                    name={element.source.name}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          {/* {this.state.loading && <Spinner />} */}
+          </div>
+        </InfiniteScroll>
+        {/* <div className="container d-flex justify-content-between">
+          <button
+            type="button"
+            disabled={this.state.page <= 1}
+            className="btn btn-dark"
+            onClick={this.handlePrevClick}
+          >
+            &larr; Previous
+          </button>
+          <button
+            type="button"
+            disabled={
+              this.state.page + 1 >
+              Math.ceil(this.state.totalResults / this.props.pageSize)
+            }
+            className="btn btn-dark"
+            onClick={this.handleNextClick}
+          >
+            Next &rarr;
+          </button>
+        </div> */}
+      </>
+    );
+  }
+}
+
+export default News;
